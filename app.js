@@ -1,4 +1,3 @@
-
 var keyData  = {
     a: {
       color: 'rgb(0,0,180)',
@@ -157,99 +156,70 @@ var keyData  = {
       })
     },
 
-  }
+}
 
-  //a list to hold shapes
-  var shapes = [];
 
-  var canvas = document.querySelector("canvas");
-  //creating a Circle
-  function circleShape(key, point){
-    var newCircle = new Path.Circle(point, 500);
-    newCircle.fillColor = keyData[key].color;
+var shape=[];
+var canvas=document.querySelector('canvas');
+function circleShape(key,point){
+    var newCircle=new Path.Circle(point,500);
+    newCircle.fillColor=keyData[key].color;
     keyData[key].sound.play();
-    shapes.push(newCircle);
-  }
-  //creating a triangle
-  function triangleShape(key, point){
-    var triangle = new Path.RegularPolygon(point, 3, 300);
-    triangle.fillColor = keyData[key].color;
+    shape.push(newCircle);
+}
+function triangleShape(key,point){
+    var triangle=new Path.RegularPolygon(point,3,300);
+    triangle.fillColor=keyData[key].color;
     keyData[key].sound.play();
-    shapes.push(triangle);
-  }
-  //creating a decagon
-  function decagonShape(key, point){
-    var decagon = new Path.RegularPolygon(point, 10, 400);
-    decagon.fillColor = keyData[key].color;
+    shape.push(triangle);
+}
+function decagonShape(key,point){
+    var decagon=new Path.RegularPolygon(point,10,400);
+    decagon.fillColor=keyData[key].color;
     keyData[key].sound.play();
-    shapes.push(decagon);
-  }
-
-  //creating a star
-  function starShape(key, point){
-    var points = 12;
-    var radius1 = 250;
-    var radius2 = 400;
-    var star = new Path.Star(point, points, radius1, radius2);
-    star.fillColor = keyData[key].color;
+    shape.push(decagon);
+}
+function starShape(key,point){
+    var points=12;
+    var radius1=250;
+    var radius2=400;
+    var star=new Path.Star(point,points,radius1,radius2);
+    star.fillColor=keyData[key].color;
     keyData[key].sound.play();
-    shapes.push(star);
+    shape.push(star);
+}
 
-  }
+function onKeyDown(event){
+    var key=event.key;
+    document.querySelector(".welcome").style.display="none";
 
+    
+        var maxpoint=new Point(view.size.width,view.size.height)
+        var randompoint=Point.random();
+        var point=maxpoint*randompoint;
 
-  function onKeyDown(event) {
-    var key = event.key;
-    document.querySelectorAll(".welcome")[0].classList.add("disappear");
-    //toggle background color of canvas from white to black
-    if(key === 'space'){
-      if(canvas.style.backgroundColor !== "white"){
-        canvas.style.backgroundColor = "white";
-      } else {
-        canvas.style.backgroundColor = "black";
-      }
+        if(key === "a"|| key === "b" || key ==="c" || key === "d" || key === "e"){
+            triangleShape(key, point);
+          }else if(key === "f"|| key === "g" || key ==="h" || key === "i" || key === "j"){
+            circleShape(key, point);
+          }else if(key === "k"|| key === "l" || key ==="m" || key === "n" || key === "o"){
+            starShape(key, point);
+          }else if(key === "p"|| key === "q" || key ==="r" || key === "s" || key === "t"){
+            decagonShape(key, point);
+          }else if(key === "u"|| key === "v" || key ==="w" || key === "x" || key === "y" || key === "z"){
+            starShape(key, point);
+          }
+}
+
+function onFrame(event){
+    for(var i=0;i<shape.length;i++)
+    {
+        shape[i].fillColor.hue+=1;
+        shape[i].scale(0.9);
+        if(shape[i].area<1){
+            shape[i].remove();
+            shape.splice(i,1);
+            i--;
+        }
     }
-
-    if(keyData[key]){
-      //Determine the max ppoint by using the view size of the width and height
-      var maxPoint = new Point(view.size.width, view.size.height);
-      //Get a random decimal point
-      var randomPoint = Point.random();
-      //generates a randome point from 0 to the view width and height
-      var point = maxPoint * randomPoint;
-      //post a random circle
-      // circleShape(key, point);
-      if(key === "a"|| key === "b" || key ==="c" || key === "d" || key === "e"){
-        triangleShape(key, point);
-      }else if(key === "f"|| key === "g" || key ==="h" || key === "i" || key === "j"){
-        circleShape(key, point);
-      }else if(key === "k"|| key === "l" || key ==="m" || key === "n" || key === "o"){
-        starShape(key, point);
-      }else if(key === "p"|| key === "q" || key ==="r" || key === "s" || key === "t"){
-        decagonShape(key, point);
-      }else if(key === "u"|| key === "v" || key ==="w" || key === "x" || key === "y" || key === "z"){
-        starShape(key, point);
-      }
-
-    }
-
-  }
-
-
-
-
-  function onFrame(event) {
-    for(var i = 0; i < shapes.length; i++){
-      // Each frame, change the fill color of the path slightly by
-        // adding 1 to its hue:
-      shapes[i].fillColor.hue += 1;
-      //multi the size by .9
-      shapes[i].scale(.9);
-      if(shapes[i].area < 1){
-        shapes[i].remove();
-        shapes.splice(i, 1);
-        i--;
-      }
-    }
-
-  }
+}
