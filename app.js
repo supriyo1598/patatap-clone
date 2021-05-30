@@ -223,3 +223,34 @@ function onFrame(event){
         }
     }
 }
+
+canvas.addEventListener('mousedown',function(event){
+  document.querySelector(".welcome").style.display="none";
+
+  var maxpoint=new Point(view.size.width,view.size.height)
+  var randompoint=Point.random();
+  var point=maxpoint*randompoint;
+  var differ=maxpoint.x/4;
+  var z=Math.random();
+  var alpha=Math.floor(z*27);
+  var arr=["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+  if(event.clientX<=differ)
+  {
+
+    triangleShape(arr[alpha], point);
+  }
+  else if(event.clientX>differ && event.clientX<=differ*2)
+  {
+    circleShape(arr[alpha], point);
+  }
+  else if(event.clientX>differ*2 && event.clientX<=differ*3)
+  {
+    decagonShape(arr[alpha], point);
+  }
+  else if(event.clientX>differ*3 && event.clientX<=differ*4){
+    starShape(arr[alpha], point);
+  }
+
+
+  
+})
